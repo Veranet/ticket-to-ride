@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/my_ticket_route_db
+    username: usertr
+    password: passwordtr
+
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: validate
+    show-sql: true
+    dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    clean-on-validation-error: true
+    clean-disabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
