@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import pl.veranet.enams.Currency;
 import pl.veranet.model.ResponseTicketEntity;
-import pl.veranet.model.Traveller;
 import pl.veranet.service.TicketService;
 
 import java.math.BigDecimal;

@@ -1,8 +1,7 @@
 package pl.veranet.service;
 
 import org.springframework.stereotype.Service;
-import pl.veranet.model.Account;
-import pl.veranet.model.Traveller;
+import pl.veranet.entity.Account;
 import pl.veranet.repository.AccountRepository;
 import pl.veranet.repository.TravellerRepository;
 

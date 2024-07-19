@@ -3,11 +3,13 @@ package pl.veranet.service;
 import org.springframework.stereotype.Service;
 import pl.veranet.enams.Currency;
 import pl.veranet.model.ResponseTicketEntity;
-import pl.veranet.model.Ticket;
+import pl.veranet.entity.Ticket;
 import pl.veranet.provider.DateTimeProvider;
 import pl.veranet.repository.TicketRepository;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class TicketService {
@@ -22,8 +24,10 @@ public class TicketService {
             var lackOf = String.valueOf(price.intValue() - balance);
             return new ResponseTicketEntity("lackOf", currency, null, lackOf);
         }
-        Ticket ticket = new Ticket(null, fromTown, toTown, price, dateTimeProvider.now());
-        //ticketRepository.save(ticket, travellerId);
+        Instant createDate = dateTimeProvider.now();
+        Instant expiredDate = createDate.plus(2, ChronoUnit.DAYS);
+        Ticket ticket = new Ticket(null, null, fromTown, toTown, price, createDate, expiredDate);
+        ticketRepository.save(ticket);
         var success = String.valueOf(balance - price.intValue());
         return new ResponseTicketEntity("success", currency, success, null);
     }

@@ -7,7 +7,7 @@ import org.jgrapht.graph.WeightedMultigraph;
 import org.springframework.stereotype.Service;
 import pl.veranet.enams.Currency;
 import pl.veranet.model.ResponsePriceEntity;
-import pl.veranet.model.Route;
+import pl.veranet.entity.Route;
 import pl.veranet.repository.RouteRepository;
 
 import java.math.BigDecimal;
@@ -43,9 +43,9 @@ public class RouteService {
         Graph<String, DefaultWeightedEdge> multiGraph =
                 new WeightedMultigraph<>(DefaultWeightedEdge.class);
         for (Route route : allRoutes) {
-            multiGraph.addVertex(route.getFromCity());
-            multiGraph.addVertex(route.getToCity());
-            DefaultWeightedEdge edge = multiGraph.addEdge(route.getFromCity(), route.getToCity());
+            multiGraph.addVertex(route.getFromTown());
+            multiGraph.addVertex(route.getToTown());
+            DefaultWeightedEdge edge = multiGraph.addEdge(route.getFromTown(), route.getToTown());
             multiGraph.setEdgeWeight(edge, route.getSegments());
         }
         return multiGraph;
