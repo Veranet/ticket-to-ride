@@ -2,9 +2,9 @@ TRUNCATE route RESTART IDENTITY;
 TRUNCATE traveller RESTART IDENTITY CASCADE;
 
 INSERT INTO traveller (name, email, created_date, deleted_date)
-    VALUES ('Alex', 'nalex@dot.com', '2024-5-5', TRUE),
-           ('Bob', 'nob@dot.com', '2024-6-6', TRUE),
-           ('Jack', 'nlack@dot.com', '2024-7-7', TRUE);
+    VALUES ('Alex', 'nalex@dot.com', '2024-5-5', null),
+           ('Bob', 'nob@dot.com', '2024-6-6', null),
+           ('Jack', 'nlack@dot.com', '2024-7-7', '2024-6-5');
 
 INSERT INTO account (traveller_id, balance)
 VALUES (1, 25.0),

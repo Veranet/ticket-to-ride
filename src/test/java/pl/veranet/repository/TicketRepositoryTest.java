@@ -20,13 +20,13 @@ class TicketRepositoryTest {
 
     @Test
     void shouldSaveTicket() {
-        Ticket ticket = new Ticket(null, 2, "A", "B", BigDecimal.valueOf(25),
+        var ticket = new Ticket(null, 2, "A", "B", BigDecimal.valueOf(25),
                 Instant.parse("2024-11-30T18:35:24.00Z"), Instant.parse("2024-11-30T18:35:24.00Z"));
+        ticketRepository.save(ticket);
 
-        Optional<Ticket> expected = Optional.of(
+        var expected = Optional.of(
                 new Ticket(2, 2, "A", "B", BigDecimal.valueOf(25),
                 Instant.parse("2024-11-30T18:35:24.00Z"), Instant.parse("2024-11-30T18:35:24.00Z")));
-        ticketRepository.save(ticket);
         assertEquals(expected, ticketRepository.findById(2));
     }
 }

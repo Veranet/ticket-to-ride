@@ -4,8 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +16,8 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private int travellerId;
+    private Instant suspendedDate;
+    @PositiveOrZero(message = "Balance must be positive")
     private BigDecimal balance;
 
     public Account() {}
@@ -21,6 +25,13 @@ public class Account {
     public Account(Integer id, int travellerId, BigDecimal balance) {
         this.id = id;
         this.travellerId = travellerId;
+        this.balance = balance;
+    }
+
+    public Account(Integer id, int travellerId, Instant suspendedDate, BigDecimal balance) {
+        this.id = id;
+        this.travellerId = travellerId;
+        this.suspendedDate = suspendedDate;
         this.balance = balance;
     }
 

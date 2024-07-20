@@ -10,7 +10,6 @@ public class ResponsePriceEntity {
     private BigDecimal price;
     private Currency currency;
 
-
     public ResponsePriceEntity () {}
 
     public ResponsePriceEntity(int segments, BigDecimal price, Currency currency) {

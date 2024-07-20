@@ -17,11 +17,19 @@ class RouteRepositoryTest {
     private RouteRepository routeRepository;
 
     @Test
-    void shouldReturnListRoute() {
-    List<Route> expected = List.of(
+    void shouldReturnListRouteWhenRoutesAreExist() {
+    var expected = List.of(
             new Route(1, "A", "C", 5),
             new Route(2, "A", "B", 2)
     );
+
          assertEquals(expected, routeRepository.findAll());
+    }
+
+    @Test
+    void shouldReturnEmptyListRouteWhenRoutesDoesNotExist() {
+        routeRepository.deleteAll();
+
+        assertEquals(List.of(), routeRepository.findAll());
     }
 }

@@ -4,14 +4,15 @@ CREATE TABLE traveller
     name         VARCHAR(200) NOT NULL,
     email        VARCHAR(200) NOT NULL,
     created_date TIMESTAMP    NOT NULL,
-    deleted_date  BOOl DEFAULT TRUE
+    deleted_date TIMESTAMP
 );
 
 CREATE TABLE account
 (
-    id           SERIAL PRIMARY KEY,
-    traveller_id INT              NOT NULL,
-    balance      DOUBLE PRECISION NOT NULL,
+    id             SERIAL PRIMARY KEY,
+    traveller_id   INT              NOT NULL,
+    balance        DOUBLE PRECISION NOT NULL,
+    suspended_date TIMESTAMP,
     CONSTRAINT fk_account_traveller_id FOREIGN KEY (traveller_id) REFERENCES traveller (id)
 );
 

@@ -13,13 +13,21 @@ import java.time.temporal.ChronoUnit;
 
 @Service
 public class TicketService {
-    private TicketRepository ticketRepository;
-    private AccountService accountService;
-    private DateTimeProvider dateTimeProvider;
+    private final TicketRepository ticketRepository;
+    private final AccountService accountService;
+    private final DateTimeProvider dateTimeProvider;
 
-    public ResponseTicketEntity createTicket(int travellerId, String fromTown, String toTown, int segments,
+    public TicketService(TicketRepository ticketRepository,
+                         AccountService accountService,
+                         DateTimeProvider dateTimeProvider) {
+        this.ticketRepository = ticketRepository;
+        this.accountService = accountService;
+        this.dateTimeProvider = dateTimeProvider;
+    }
+
+    public ResponseTicketEntity createTicket(int travellerId, String fromTown, String toTown,
                                              BigDecimal price, Currency currency) {
-        int balance = accountService.checkTraveller(travellerId);
+        int balance = accountService.getBalance(travellerId);
         if (balance < price.intValue()) {
             var lackOf = String.valueOf(price.intValue() - balance);
             return new ResponseTicketEntity("lackOf", currency, null, lackOf);

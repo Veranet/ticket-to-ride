@@ -17,9 +17,8 @@ public class TicketController {
     public ResponseTicketEntity buyTicket(//@AuthenticationPrincipal Traveller traveller,
                                           @PathVariable String fromTown,
                                           @PathVariable String toTown,
-                                          @PathVariable int segments,
                                           @PathVariable BigDecimal price,
                                           @PathVariable Currency currency) {
-        return ticketService.createTicket(5, fromTown, toTown, segments, price, currency);
+        return ticketService.createTicket(5, fromTown, toTown, price, currency);
     }
 }

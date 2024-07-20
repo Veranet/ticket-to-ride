@@ -15,7 +15,11 @@ import java.util.List;
 
 @Service
 public class RouteService {
-    private RouteRepository routeRepository;
+    private final RouteRepository routeRepository;
+
+    public RouteService(RouteRepository routeRepository) {
+        this.routeRepository = routeRepository;
+    }
 
     public ResponsePriceEntity countOptimalPathAndPrice(String fromTown, String toTown) {
         if(fromTown == null || toTown == null) {
@@ -31,12 +35,9 @@ public class RouteService {
         Graph<String, DefaultWeightedEdge> multiGraph = getStringDefaultWeightedEdgeGraph(allRoutes);
         DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAl =
                 new DijkstraShortestPath<>(multiGraph);
-        double weight = dijkstraAl.getPath("cov", "r").getWeight();
-        double optimalPrice = calculatePrice((int) weight);
-        Route responseRoute = new Route(fromTown, toTown, (int) weight);
-        ResponsePriceEntity response;
-        response = new ResponsePriceEntity((int) weight, BigDecimal.valueOf(optimalPrice), Currency.GBP);
-        return response;
+        int weight = Double.valueOf(Math.ceil(dijkstraAl.getPath(fromTown, toTown).getWeight())).intValue();
+        double optimalPrice = calculatePrice(weight);
+        return new ResponsePriceEntity(weight, BigDecimal.valueOf(optimalPrice), Currency.GBP);
     }
 
     private Graph<String, DefaultWeightedEdge> getStringDefaultWeightedEdgeGraph(List<Route> allRoutes) {

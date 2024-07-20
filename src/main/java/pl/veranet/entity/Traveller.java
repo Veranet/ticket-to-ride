@@ -16,12 +16,12 @@ public class Traveller {
     private String name;
     private String email;
     private Instant createdDate;
-    private boolean deletedDate;
+    private Instant deletedDate;
 
     public Traveller() {
     }
 
-    public Traveller(Integer id, String name, String email, Instant createdDate, boolean deletedDate) {
+    public Traveller(Integer id, String name, String email, Instant createdDate, Instant deletedDate) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -61,11 +61,11 @@ public class Traveller {
         this.createdDate = createdDate;
     }
 
-    public boolean isDeletedDate() {
+    public Instant getDeletedDate() {
         return deletedDate;
     }
 
-    public void setDeletedDate(boolean deletedDate) {
+    public void setDeletedDate(Instant deletedDate) {
         this.deletedDate = deletedDate;
     }
 
@@ -74,7 +74,11 @@ public class Traveller {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Traveller traveller = (Traveller) o;
-        return deletedDate == traveller.deletedDate && Objects.equals(id, traveller.id) && Objects.equals(name, traveller.name) && Objects.equals(email, traveller.email) && Objects.equals(createdDate, traveller.createdDate);
+        return Objects.equals(id, traveller.id)
+                && Objects.equals(name, traveller.name)
+                && Objects.equals(email, traveller.email)
+                && Objects.equals(createdDate, traveller.createdDate)
+                && Objects.equals(deletedDate, traveller.deletedDate);
     }
 
     @Override
