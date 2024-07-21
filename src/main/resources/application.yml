@@ -1,3 +1,9 @@
+ticket:
+  price:
+    one-segment: 5.0
+    two-segments: 7.0
+    three-segments: 10.0
+
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -17,3 +23,4 @@ spring:
     clean-disabled: true
     baseline-on-migrate: true
     baseline-version: 0
+

@@ -1,6 +1,10 @@
 package pl.veranet.tickettoroute.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.veranet.tickettoroute.dto.ResponsePriceEntity;
 import pl.veranet.tickettoroute.enams.Currency;
 import pl.veranet.tickettoroute.entity.Route;
@@ -12,12 +16,21 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class RouteServiceTest {
-    private final RouteRepository routeRepository = mock(RouteRepository.class);
-    private final RouteService routeService = new RouteService(routeRepository);
+    @Mock
+    private RouteRepository routeRepository;
+    private RouteService routeService;
+
+    @BeforeEach
+    void init() {
+        var oneSegmentPrice = 5.0;
+        var twoSegmentPrice = 7.0;
+        var threeSegmentPrice = 10.0;
+        routeService = new RouteService(routeRepository, oneSegmentPrice, twoSegmentPrice, threeSegmentPrice);
+    }
 
     @Test
     void shouldCountOptimalPathAndPrice() {

@@ -10,18 +10,40 @@ import pl.veranet.tickettoroute.enams.Currency;
 import pl.veranet.tickettoroute.entity.Route;
 import pl.veranet.tickettoroute.repository.RouteRepository;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class RouteService {
+    private final double oneSegmentPrice;
+    private final double twoSegmentsPrice;
+    private final double threeSegmentsPrice;
+
     private final RouteRepository routeRepository;
 
-    public RouteService(RouteRepository routeRepository) {
+    public RouteService(RouteRepository routeRepository,
+                        @Value("${ticket.price.one-segment}") double oneSegmentPrice,
+                        @Value("${ticket.price.two-segments}") double twoSegmentsPrice,
+                        @Value("${ticket.price.three-segments}") double threeSegmentsPrice) {
         this.routeRepository = routeRepository;
+        this.oneSegmentPrice = oneSegmentPrice;
+        this.twoSegmentsPrice = twoSegmentsPrice;
+        this.threeSegmentsPrice = threeSegmentsPrice;
     }
 
     public ResponsePriceEntity countOptimalPathAndPrice(String from, String to) {
+        var allRoutes = getAllRoutes(from, to);
+        Graph<String, DefaultWeightedEdge> graphRoutes = getRouteGraph(allRoutes);
+        DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraShortestPath =
+                new DijkstraShortestPath<>(graphRoutes);
+        int numberOfSegments = Double.valueOf(Math.ceil(dijkstraShortestPath.getPath(from, to).getWeight())).intValue();
+        double optimalPrice = calculatePrice(numberOfSegments);
+        return new ResponsePriceEntity(numberOfSegments, BigDecimal.valueOf(optimalPrice), Currency.GBP);
+    }
+
+    private List<Route> getAllRoutes(String from, String to) {
         if(from == null || to == null) {
             throw new IllegalArgumentException("From Town and To Town must not be null");
         }
@@ -32,15 +54,10 @@ public class RouteService {
         if(allRoutes.isEmpty()) {
             throw new IllegalArgumentException("Routes are empty");
         }
-        Graph<String, DefaultWeightedEdge> multiGraph = getRouteGraph(allRoutes);
-        DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraAl =
-                new DijkstraShortestPath<>(multiGraph);
-        int weight = Double.valueOf(Math.ceil(dijkstraAl.getPath(from, to).getWeight())).intValue();
-        double optimalPrice = calculatePrice(weight);
-        return new ResponsePriceEntity(weight, BigDecimal.valueOf(optimalPrice), Currency.GBP);
+        return allRoutes;
     }
 
-    private Graph<String, DefaultWeightedEdge> getRouteGraph(List<Route> allRoutes) { // todo : add routes to repo!!!
+    private Graph<String, DefaultWeightedEdge> getRouteGraph(List<Route> allRoutes) {
         Graph<String, DefaultWeightedEdge> multiGraph =
                 new WeightedMultigraph<>(DefaultWeightedEdge.class);
         for (Route route : allRoutes) {
@@ -52,13 +69,14 @@ public class RouteService {
         return multiGraph;
     }
 
-    private double calculatePrice(int segments) { // todo : move to application.yaml
+    private double calculatePrice(int segments) {
         if (segments == 1) {
-            return 5;
+            return oneSegmentPrice;
+
         } else if (segments == 2) {
-            return 7;
+            return twoSegmentsPrice;
         } else if (segments == 3) {
-            return 10;
+            return threeSegmentsPrice;
         } else if (segments > 3) {
             int setsOfThree = segments / 3;
             int remainingSegments = segments % 3;
