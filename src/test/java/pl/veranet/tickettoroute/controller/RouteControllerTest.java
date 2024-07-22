@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.veranet.tickettoroute.entity.Route;
 import pl.veranet.tickettoroute.repository.RouteRepository;
@@ -39,7 +40,7 @@ class RouteControllerTest {
         segments.add(new Route("r", "london", 1));
         when(routeRepository.findAll()).thenReturn(segments);
 
-        mvc.perform(get("/ticket-to-ride/price")
+        mvc.perform(get("/price")
                         .param("fromTown", "cov")
                         .param("toTown", "r"))
                 .andExpect(status().isOk())
@@ -48,7 +49,7 @@ class RouteControllerTest {
 
     @Test
     void shouldRequestWith403WhenFromAndToAreTheSame() throws Exception {
-        mvc.perform(get("/ticket-to-ride/price").param("fromTown", "r")
+        mvc.perform(get("/price").param("fromTown", "r")
                 .param("toTown", "r"))
                 .andExpect(status().isForbidden());
     }

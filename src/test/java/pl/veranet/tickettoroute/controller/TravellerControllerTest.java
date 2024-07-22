@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,6 +24,7 @@ class TravellerControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @WithUserDetails("spring")
     @Test
     void shouldCreateTraveller() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
@@ -34,6 +37,7 @@ class TravellerControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturn400WhenNameIsNull() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
@@ -46,6 +50,7 @@ class TravellerControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturn400WhenNameIsEmpty() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
@@ -58,6 +63,7 @@ class TravellerControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturn400WhenEmailIsNotValid() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
@@ -70,12 +76,14 @@ class TravellerControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldDeleteTraveller() throws Exception {
         mvc.perform(delete("/ticket-to-ride/traveller/2"))
                 .andExpect(status().isOk());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturnTravellers() throws Exception {
         mvc.perform(get("/ticket-to-ride/traveller"))

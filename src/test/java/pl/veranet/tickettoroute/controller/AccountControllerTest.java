@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.veranet.tickettoroute.service.AccountService;
 
@@ -29,6 +30,7 @@ class AccountControllerTest {
     @MockBean
     private AccountService accountService;
 
+    @WithUserDetails("spring")
     @Test
     void refillBalance() throws Exception {
         doNothing().when(accountService).updateBalance(anyInt(), any(BigDecimal.class));
@@ -39,6 +41,7 @@ class AccountControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @WithUserDetails("spring")
     @Test
     void getBalance() throws Exception {
         when(accountService.getBalance(anyInt())).thenReturn(100.00);

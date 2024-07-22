@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -20,6 +21,7 @@ class TicketControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturnLackOfFundsResponseRealDB() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
@@ -35,6 +37,7 @@ class TicketControllerTest {
                 .andExpect(content().json("{\"result\":\"lackOf\",\"currency\":\"GBP\",\"lackOf\":\"7.0\"}"));
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturnSuccessResponseRealDB() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
@@ -50,6 +53,7 @@ class TicketControllerTest {
                 .andExpect(content().json("{\"result\":\"success\",\"currency\":\"GBP\",\"change\":\"18.0\"}"));
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturn404WhenFromIsNull() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
@@ -64,6 +68,7 @@ class TicketControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturn404WhenFromIsEmpty() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
@@ -78,6 +83,7 @@ class TicketControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturn404WhenToIsEmpty() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
@@ -92,6 +98,7 @@ class TicketControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturn404WhenToIsNull() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
@@ -106,6 +113,7 @@ class TicketControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturn404WhenPriceIsNegative() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
@@ -120,6 +128,7 @@ class TicketControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @WithUserDetails("spring")
     @Test
     void shouldReturn404WhenPrice0() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")

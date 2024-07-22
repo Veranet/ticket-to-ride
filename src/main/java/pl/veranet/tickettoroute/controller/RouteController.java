@@ -8,7 +8,7 @@ import pl.veranet.tickettoroute.dto.ResponsePriceEntity;
 import pl.veranet.tickettoroute.service.RouteService;
 
 @RestController
-@RequestMapping("/ticket-to-ride/price")
+@RequestMapping("/price")
 public class RouteController {
     private final RouteService routeService;
 
