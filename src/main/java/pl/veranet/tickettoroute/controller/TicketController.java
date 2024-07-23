@@ -22,9 +22,16 @@ public class TicketController {
         this.conversionService = conversionService;
     }
 
+    /**
+     * Allows an authorized traveller to buy a ticket.
+     * The traveller must have enough balance to cover the cost of the ticket.
+     * If the traveller has insufficient balance, a 403 status is returned.
+     *
+     * @param ticketCreateDto the data transfer object containing ticket creation details
+     * @return a ResponseTicketEntity containing the details of the created ticket or an error message
+     */
     @PostMapping("/ticket")
-    public ResponseTicketEntity buyTicket(//@AuthenticationPrincipal Traveller traveller,
-                                           @Valid @RequestBody TicketCreateDto ticketCreateDto) {
+    public ResponseTicketEntity buyTicket(@Valid @RequestBody TicketCreateDto ticketCreateDto) {
         var ticket = conversionService.convert(ticketCreateDto, Ticket.class);
         return ticketService.createTicket(ticket);
     }

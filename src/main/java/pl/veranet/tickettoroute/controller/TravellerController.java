@@ -15,7 +15,7 @@ import pl.veranet.tickettoroute.service.TravellerService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ticket-to-ride/traveller")
+@RequestMapping("/ticket-to-ride")
 public class TravellerController {
     private final TravellerService travellerService;
 
@@ -23,17 +23,23 @@ public class TravellerController {
         this.travellerService = travellerService;
     }
 
-    @PostMapping
+    @PostMapping("/traveller")
     public void createTraveller(@Validated @RequestBody TravellerCreateDto travellerCreateDto) {
         travellerService.createTraveller(travellerCreateDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/traveller/{id}")
     public void deleteTraveller(@PathVariable("id") int id) {
         travellerService.deleteTraveller(id);
     }
 
-    @GetMapping
+    /**
+     * Retrieves a list of all travellers.
+     * This endpoint is restricted to users with the ADMIN role.
+     *
+     * @return a list of Traveller objects
+     */
+    @GetMapping("/admin")
     public List<Traveller> getTravellers() { // todo: for ADMIN roll only!!!
         return travellerService.getAllTravellers();
     }

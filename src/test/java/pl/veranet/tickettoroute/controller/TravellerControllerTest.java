@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,9 +25,9 @@ class TravellerControllerTest {
     @Autowired
     private MockMvc mvc;
 
-    @WithUserDetails("spring")
+    @WithUserDetails("user")
     @Test
-    void shouldCreateTraveller() throws Exception {
+    void shouldReturn200AndCreateTraveller() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -37,7 +38,7 @@ class TravellerControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @WithUserDetails("spring")
+    @WithUserDetails("user")
     @Test
     void shouldReturn400WhenNameIsNull() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
@@ -50,7 +51,7 @@ class TravellerControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @WithUserDetails("spring")
+    @WithUserDetails("user")
     @Test
     void shouldReturn400WhenNameIsEmpty() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
@@ -63,7 +64,7 @@ class TravellerControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @WithUserDetails("spring")
+    @WithUserDetails("user")
     @Test
     void shouldReturn400WhenEmailIsNotValid() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
@@ -76,17 +77,37 @@ class TravellerControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @WithUserDetails("spring")
+    @WithAnonymousUser
     @Test
-    void shouldDeleteTraveller() throws Exception {
+    void shouldReturn401WhenAnonymousUserCallCreateTraveller() throws Exception {
+        mvc.perform(post("/ticket-to-ride/traveller")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                        {
+                            "name":"Sara",
+                            "email":"sara.com"
+                        }"""))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithUserDetails("user")
+    @Test
+    void shouldReturn200AndDeleteTraveller() throws Exception {
         mvc.perform(delete("/ticket-to-ride/traveller/2"))
                 .andExpect(status().isOk());
     }
 
-    @WithUserDetails("spring")
+    @WithAnonymousUser
     @Test
-    void shouldReturnTravellers() throws Exception {
-        mvc.perform(get("/ticket-to-ride/traveller"))
+    void shouldReturn401WhenAnonymousUserCallDelete() throws Exception {
+        mvc.perform(delete("/ticket-to-ride/traveller/2"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @WithUserDetails("admin")
+    @Test
+    void shouldReturnTravellersWhenMethodCalledByAdmin() throws Exception {
+        mvc.perform(get("/ticket-to-ride/admin"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                         [
@@ -112,5 +133,19 @@ class TravellerControllerTest {
                                 "deletedDate": "2024-06-05T00:00:00Z"
                             }
                         ]"""));
+    }
+
+    @WithUserDetails("user")
+    @Test
+    void shouldReturn403WhenMethodCalledByUser() throws Exception {
+        mvc.perform(get("/ticket-to-ride/admin"))
+                .andExpect(status().isForbidden());
+    }
+
+    @WithAnonymousUser
+    @Test
+    void shouldReturn401WhenMethodCalledByAnonymousUser() throws Exception {
+        mvc.perform(get("/ticket-to-ride/admin"))
+                .andExpect(status().isUnauthorized());
     }
 }
