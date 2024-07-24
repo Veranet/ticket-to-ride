@@ -56,7 +56,7 @@ class TicketControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn404WhenFromIsNull() throws Exception {
+    void shouldReturnBadRequestWhenFromIsNull() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -71,7 +71,7 @@ class TicketControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn404WhenFromIsEmpty() throws Exception {
+    void shouldReturnBadRequestWhenFromIsEmpty() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -86,7 +86,7 @@ class TicketControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn404WhenToIsEmpty() throws Exception {
+    void shouldReturnBadRequestWhenToIsEmpty() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -101,7 +101,7 @@ class TicketControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn404WhenToIsNull() throws Exception {
+    void shouldReturnBadRequestWhenToIsNull() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -116,7 +116,7 @@ class TicketControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn404WhenPriceIsNegative() throws Exception {
+    void shouldReturnBadRequestWhenPriceIsNegative() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -131,7 +131,7 @@ class TicketControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn404WhenPrice0() throws Exception {
+    void shouldReturnBadRequestWhenPrice0() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -146,7 +146,7 @@ class TicketControllerTest {
 
     @WithAnonymousUser
     @Test
-    void shouldReturn401WhenAnonymousUse() throws Exception {
+    void shouldReturnUnauthorizedWhenAnonymousUse() throws Exception {
         mvc.perform(post("/ticket-to-ride/ticket")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""

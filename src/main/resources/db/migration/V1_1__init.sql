@@ -30,8 +30,8 @@ CREATE TABLE ticket
 
 CREATE TABLE route
 (
-    id          SERIAL PRIMARY KEY,
-    from_town   VARCHAR(100) NOT NULL,
-    to_town     VARCHAR(100) NOT NULL,
-    segments    INT          NOT NULL
+    id                  SERIAL PRIMARY KEY,
+    from_town           VARCHAR(100) NOT NULL,
+    to_town             VARCHAR(100) NOT NULL,
+    segments_amount     INT          NOT NULL
 )

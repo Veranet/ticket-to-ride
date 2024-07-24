@@ -18,30 +18,24 @@ public class TravellerCreateDto {
     public TravellerCreateDto() {
     }
 
-    public TravellerCreateDto(@Validated String name, @Validated String email) {
+    public TravellerCreateDto(String name, String email) {
         this.name = name;
         this.email = email;
     }
 
-    public @NotNull String getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(@NotNull String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-            + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-            + "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-            message = "{invalid.email}") String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(@Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-            + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-            + "(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-            message = "{invalid.email}") String email) {
+    public void setEmail (String email) {
         this.email = email;
     }
 }

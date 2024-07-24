@@ -6,15 +6,15 @@ import pl.veranet.tickettoroute.enams.Currency;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResponseTicketEntity {
+public class Decision {
     private String result;
     private Currency currency;
     private String change;
     private String lackOf;
 
-    public ResponseTicketEntity() {}
+    public Decision() {}
 
-    public ResponseTicketEntity(String result, Currency currency, String change, String lackOf) {
+    public Decision(String result, Currency currency, String change, String lackOf) {
         this.result = result;
         this.currency = currency;
         this.change = change;
@@ -57,7 +57,7 @@ public class ResponseTicketEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ResponseTicketEntity that = (ResponseTicketEntity) o;
+        Decision that = (Decision) o;
         return Objects.equals(result, that.result) && currency == that.currency && Objects.equals(change, that.change) && Objects.equals(lackOf, that.lackOf);
     }
 
@@ -68,7 +68,7 @@ public class ResponseTicketEntity {
 
     @Override
     public String toString() {
-        return "ResponseTicketEntity{" +
+        return "Decision{" +
                 "result='" + result + '\'' +
                 ", currency=" + currency +
                 ", change='" + change + '\'' +

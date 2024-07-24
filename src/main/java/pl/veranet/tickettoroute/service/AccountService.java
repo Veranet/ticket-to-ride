@@ -31,7 +31,7 @@ public class AccountService {
 
     private Account getAccountIfExist(int userId) {
         return accountRepository.findAccountByIdAndSuspendedDateIsNullOrSuspendedDateIsBefore(userId,
-                dateTimeProvider.now()).orElseThrow(() ->
+                dateTimeProvider.provideDateTime()).orElseThrow(() ->
                 new IllegalArgumentException(String.format("Traveller with ID =%d not found", userId)));
     }
 }

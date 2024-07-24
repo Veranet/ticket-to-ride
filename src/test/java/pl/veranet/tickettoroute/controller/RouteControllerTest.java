@@ -27,17 +27,9 @@ class RouteControllerTest {
     RouteRepository routeRepository;
 
     @Test
-    void shouldAuthRequestSuccessfullyWith200() throws Exception {
-        List<Route> segments = new ArrayList<>();
-        segments.add(new Route("benc", "cov", 1));
-        segments.add(new Route("benc", "bris", 3));
-        segments.add(new Route("benc", "swip", 4));
-        segments.add(new Route("cov", "n", 2));
-        segments.add(new Route("n", "london", 2));
-        segments.add(new Route("bris", "swip", 2));
-        segments.add(new Route("swip", "r", 4));
-        segments.add(new Route("r", "london", 1));
-        when(routeRepository.findAll()).thenReturn(segments);
+    void shouldPerformSuccessfullyWith200() throws Exception {
+        List<Route> routes = createRoutesForHappyPath();
+        when(routeRepository.findAll()).thenReturn(routes);
 
         mvc.perform(get("/price")
                         .param("fromTown", "cov")
@@ -47,9 +39,22 @@ class RouteControllerTest {
     }
 
     @Test
-    void shouldRequestWith403WhenFromAndToAreTheSame() throws Exception {
+    void shouldReturnForbiddenWhenFromAndToAreTheSame() throws Exception {
         mvc.perform(get("/price").param("fromTown", "r")
                 .param("toTown", "r"))
                 .andExpect(status().isForbidden());
+    }
+
+    private List<Route> createRoutesForHappyPath() {
+        List<Route> segments = new ArrayList<>();
+        segments.add(new Route("benc", "cov", 1));
+        segments.add(new Route("benc", "bris", 3));
+        segments.add(new Route("benc", "swip", 4));
+        segments.add(new Route("cov", "n", 2));
+        segments.add(new Route("n", "london", 2));
+        segments.add(new Route("bris", "swip", 2));
+        segments.add(new Route("swip", "r", 4));
+        segments.add(new Route("r", "london", 1));
+        return segments;
     }
 }

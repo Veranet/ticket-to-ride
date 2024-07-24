@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,37 +34,47 @@ class AccountControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn200AndRefillBalance() throws Exception {
+    void shouldPatchSuccessfullyAndRefillBalance() throws Exception {
         doNothing().when(accountService).updateBalance(anyInt(), any(BigDecimal.class));
 
         mvc.perform(patch("/ticket-to-ride/account")
-                        .param("id", "1")
-                        .param("amount", "100.00"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                "accountId": 1,
+                                "amount": "100.00"
+                                }
+                                """))
                 .andExpect(status().isOk());
     }
 
     @WithAnonymousUser
     @Test
-    void shouldReturn401WhenAnonymousUserCallUpdateBalance() throws Exception {
+    void shouldReturnUnauthorizedWhenAnonymousUserCallUpdateBalance() throws Exception {
         mvc.perform(patch("/ticket-to-ride/account")
-                        .param("id", "1")
-                        .param("amount", "100.00"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                "accountId": 1,
+                                "amount": "100.00"
+                                }
+                                """))
                 .andExpect(status().isUnauthorized());
     }
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn200AndReturnBalance() throws Exception {
+    void shouldReturnSuccessfullyAndReturnBalance() throws Exception {
         when(accountService.getBalance(anyInt())).thenReturn(100.00);
         mvc.perform(get("/ticket-to-ride/account")
                         .param("id", "1"))
                 .andExpect(status().isOk())
-                .andExpect(content().json("{\"accountBalance\":100.00}"));
+                .andExpect(content().json("{\"balance\":100.00}"));
     }
 
     @WithAnonymousUser
     @Test
-    void shouldReturn401WhenAnonymousUserCallGetBalance() throws Exception {
+    void shouldReturnUnauthorizedWhenAnonymousUserCallGetBalance() throws Exception {
         mvc.perform(get("/ticket-to-ride/account")
                         .param("id", "1"))
                 .andExpect(status().isUnauthorized());

@@ -13,11 +13,13 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>3.3.1</spring.boot.version>
+        <spring.security.test.version>6.3.1</spring.security.test.version>
         <flyway.version>10.15.2</flyway.version>
         <postgresql.version>42.7.3</postgresql.version>
         <jackson.databind>2.17.1</jackson.databind>
         <mockito.junit.version>5.12.0</mockito.junit.version>
         <junit.version>5.10.3</junit.version>
+        <jgrapht.version>1.5.2</jgrapht.version>
     </properties>
 
     <dependencies>
@@ -44,7 +46,7 @@
         <dependency>
             <groupId>org.jgrapht</groupId>
             <artifactId>jgrapht-core</artifactId>
-            <version>1.5.2</version>
+            <version>${jgrapht.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -71,7 +73,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-            <version>6.3.1</version>
+            <version>${spring.security.test.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

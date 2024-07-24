@@ -5,14 +5,14 @@ import pl.veranet.tickettoroute.enams.Currency;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class ResponsePriceEntity {
+public class Price {
     private int segments;
     private BigDecimal price;
     private Currency currency;
 
-    public ResponsePriceEntity () {}
+    public Price() {}
 
-    public ResponsePriceEntity(int segments, BigDecimal price, Currency currency) {
+    public Price(int segments, BigDecimal price, Currency currency) {
         this.segments = segments;
         this.price = price;
         this.currency = currency;
@@ -46,7 +46,7 @@ public class ResponsePriceEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ResponsePriceEntity that = (ResponsePriceEntity) o;
+        Price that = (Price) o;
         return segments == that.segments && Objects.equals(price, that.price) && currency == that.currency;
     }
 
@@ -57,7 +57,7 @@ public class ResponsePriceEntity {
 
     @Override
     public String toString() {
-        return "ResponsePriceEntity{" +
+        return "Price{" +
                 "segments=" + segments +
                 ", price=" + price +
                 ", currency=" + currency +

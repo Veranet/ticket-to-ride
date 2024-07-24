@@ -14,22 +14,22 @@ public class Route {
     private Integer id;
     private String fromTown;
     private String toTown;
-    private int segments;
+    private int segmentsAmount;
 
     public Route() {
     }
 
-    public Route(String fromTown, String toTown, int segments) {
+    public Route(String fromTown, String toTown, int segmentsAmount) {
         this.fromTown = fromTown;
         this.toTown = toTown;
-        this.segments = segments;
+        this.segmentsAmount = segmentsAmount;
     }
 
-    public Route(Integer id, String fromTown, String toTown, int segments) {
+    public Route(Integer id, String fromTown, String toTown, int segmentsAmount) {
         this.id = id;
         this.fromTown = fromTown;
         this.toTown = toTown;
-        this.segments = segments;
+        this.segmentsAmount = segmentsAmount;
     }
 
     public String getFromTown() {
@@ -48,12 +48,12 @@ public class Route {
         this.toTown = toTown;
     }
 
-    public double getSegments() {
-        return segments;
+    public double getSegmentsAmount() {
+        return segmentsAmount;
     }
 
-    public void setSegments(int segments) {
-        this.segments = segments;
+    public void setSegmentsAmount(int segments) {
+        this.segmentsAmount = segments;
     }
 
     public Integer getId() {
@@ -66,13 +66,13 @@ public class Route {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return segments == route.segments && Objects.equals(id, route.id) && Objects.equals(fromTown, route.fromTown)
+        return segmentsAmount == route.segmentsAmount && Objects.equals(id, route.id) && Objects.equals(fromTown, route.fromTown)
                 && Objects.equals(toTown, route.toTown);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fromTown, toTown, segments);
+        return Objects.hash(id, fromTown, toTown, segmentsAmount);
     }
 
     public void setId(Integer id) {
@@ -85,7 +85,7 @@ public class Route {
                 "id=" + id +
                 ", fromTown='" + fromTown + '\'' +
                 ", toTown='" + toTown + '\'' +
-                ", segments=" + segments +
+                ", segmentsAmount=" + segmentsAmount +
                 '}';
     }
 }

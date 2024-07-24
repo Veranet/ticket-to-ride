@@ -2,13 +2,13 @@ package pl.veranet.tickettoroute.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.veranet.tickettoroute.dto.AccountBalanceDto;
+import pl.veranet.tickettoroute.dto.BalanceDto;
 import pl.veranet.tickettoroute.service.AccountService;
-
-import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/ticket-to-ride/account")
@@ -20,9 +20,8 @@ public class AccountController {
     }
 
     @PatchMapping
-    public void refillBalance(@RequestParam("id") int id,
-                              @RequestParam("amount") BigDecimal amount) {
-        accountService.updateBalance(id, amount);
+    public void refillBalance(@RequestBody BalanceDto balanceDto) {
+        accountService.updateBalance(balanceDto.getAccountId(), balanceDto.getAmount());
     }
 
     @GetMapping

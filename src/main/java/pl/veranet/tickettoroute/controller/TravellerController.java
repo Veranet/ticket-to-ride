@@ -1,6 +1,6 @@
 package pl.veranet.tickettoroute.controller;
 
-import org.springframework.validation.annotation.Validated;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +24,7 @@ public class TravellerController {
     }
 
     @PostMapping("/traveller")
-    public void createTraveller(@Validated @RequestBody TravellerCreateDto travellerCreateDto) {
+    public void createTraveller(@Valid @RequestBody TravellerCreateDto travellerCreateDto) {
         travellerService.createTraveller(travellerCreateDto);
     }
 

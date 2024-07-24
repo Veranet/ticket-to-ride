@@ -14,6 +14,6 @@ VALUES (1, 25.0),
 INSERT INTO ticket (traveller_id, from_town, to_town, price, created_date, expired_date)
 VALUES (1, 'A', 'B', 2.0, '2024-5-5', '2024-6-5');
 
-INSERT INTO route (from_town, to_town, segments)
+INSERT INTO route (from_town, to_town, segments_amount)
 VALUES ('A', 'C', 5),
        ('A', 'B', 2);

@@ -27,7 +27,7 @@ class TravellerControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn200AndCreateTraveller() throws Exception {
+    void shouldReturnSuccessfullyAndCreateTraveller() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
@@ -40,7 +40,7 @@ class TravellerControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn400WhenNameIsNull() throws Exception {
+    void shouldReturnBadRequestWhenNameIsNull() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -53,7 +53,7 @@ class TravellerControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn400WhenNameIsEmpty() throws Exception {
+    void shouldReturnBadRequestWhenNameIsEmpty() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -66,7 +66,7 @@ class TravellerControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn400WhenEmailIsNotValid() throws Exception {
+    void shouldReturnBadRequestWhenEmailIsNotValid() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -79,7 +79,7 @@ class TravellerControllerTest {
 
     @WithAnonymousUser
     @Test
-    void shouldReturn401WhenAnonymousUserCallCreateTraveller() throws Exception {
+    void shouldReturnUnauthorizedWhenAnonymousUserCallCreateTraveller() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -92,14 +92,14 @@ class TravellerControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn200AndDeleteTraveller() throws Exception {
+    void shouldReturnSuccessfullyAndDeleteTraveller() throws Exception {
         mvc.perform(delete("/ticket-to-ride/traveller/2"))
                 .andExpect(status().isOk());
     }
 
     @WithAnonymousUser
     @Test
-    void shouldReturn401WhenAnonymousUserCallDelete() throws Exception {
+    void shouldReturnUnauthorizedWhenAnonymousUserCallDelete() throws Exception {
         mvc.perform(delete("/ticket-to-ride/traveller/2"))
                 .andExpect(status().isUnauthorized());
     }
@@ -137,14 +137,14 @@ class TravellerControllerTest {
 
     @WithUserDetails("user")
     @Test
-    void shouldReturn403WhenMethodCalledByUser() throws Exception {
+    void shouldReturnForbiddenWhenMethodCalledByUser() throws Exception {
         mvc.perform(get("/ticket-to-ride/admin"))
                 .andExpect(status().isForbidden());
     }
 
     @WithAnonymousUser
     @Test
-    void shouldReturn401WhenMethodCalledByAnonymousUser() throws Exception {
+    void shouldReturnUnauthorizedWhenMethodCalledByAnonymousUser() throws Exception {
         mvc.perform(get("/ticket-to-ride/admin"))
                 .andExpect(status().isUnauthorized());
     }

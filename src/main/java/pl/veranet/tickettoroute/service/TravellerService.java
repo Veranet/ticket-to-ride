@@ -17,7 +17,9 @@ public class TravellerService {
     private final AccountRepository accountRepository;
     private final DateTimeProvider dateTimeProvider;
 
-    public TravellerService(TravellerRepository travellerRepository, AccountRepository accountRepository, DateTimeProvider dateTimeProvider) {
+    public TravellerService(TravellerRepository travellerRepository,
+                            AccountRepository accountRepository,
+                            DateTimeProvider dateTimeProvider) {
         this.travellerRepository = travellerRepository;
         this.accountRepository = accountRepository;
         this.dateTimeProvider = dateTimeProvider;
@@ -25,14 +27,15 @@ public class TravellerService {
 
     public void createTraveller(TravellerCreateDto travellerCreateDto) {
         Traveller traveller =
-                new Traveller(null, travellerCreateDto.getName(), travellerCreateDto.getEmail(), dateTimeProvider.now(), null);
+                new Traveller(null, travellerCreateDto.getName(), travellerCreateDto.getEmail(),
+                        dateTimeProvider.provideDateTime(), null);
         Traveller travellerFromRepo = travellerRepository.save(traveller);
         Account account = new Account(null, travellerFromRepo.getId(), BigDecimal.valueOf(0.0));
         accountRepository.save(account);
     }
 
     public void deleteTraveller(int id) {
-        travellerRepository.updateTravellerByDeletedDate(id, dateTimeProvider.now());
+        travellerRepository.updateTravellerByDeletedDate(id, dateTimeProvider.provideDateTime());
     }
 
     public List<Traveller> getAllTravellers() {

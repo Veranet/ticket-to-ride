@@ -3,18 +3,18 @@ package pl.veranet.tickettoroute.dto;
 import java.util.Objects;
 
 public class AccountBalanceDto {
-    private Double accountBalance;
+    private Double balance;
 
-    public AccountBalanceDto(Double accountBalance) {
-        this.accountBalance = accountBalance;
+    public AccountBalanceDto(Double balance) {
+        this.balance = balance;
     }
 
-    public Double getAccountBalance() {
-        return accountBalance;
+    public Double getBalance() {
+        return balance;
     }
 
-    public void setAccountBalance(Double accountBalance) {
-        this.accountBalance = accountBalance;
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 
     @Override
@@ -22,18 +22,18 @@ public class AccountBalanceDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AccountBalanceDto that = (AccountBalanceDto) o;
-        return Objects.equals(accountBalance, that.accountBalance);
+        return Objects.equals(balance, that.balance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(accountBalance);
+        return Objects.hashCode(balance);
     }
 
     @Override
     public String toString() {
         return "AccountBalanceDto{" +
-                "accountBalance=" + accountBalance +
+                "balance=" + balance +
                 '}';
     }
 }

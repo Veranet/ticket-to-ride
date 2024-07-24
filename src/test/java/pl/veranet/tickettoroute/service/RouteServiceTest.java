@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.veranet.tickettoroute.dto.ResponsePriceEntity;
+import pl.veranet.tickettoroute.dto.Price;
 import pl.veranet.tickettoroute.enams.Currency;
 import pl.veranet.tickettoroute.entity.Route;
 import pl.veranet.tickettoroute.repository.RouteRepository;
@@ -33,7 +33,7 @@ class RouteServiceTest {
     }
 
     @Test
-    void shouldCountOptimalPathAndPrice() {
+    void shouldCountOptimalPathAndPriceWhenHappyPath() {
         List<Route> segments = new ArrayList<>();
         segments.add(new Route("benc", "cov", 1));
         segments.add(new Route("benc", "bris", 3));
@@ -45,7 +45,7 @@ class RouteServiceTest {
         segments.add(new Route("r", "london", 1));
         when(routeRepository.findAll()).thenReturn(segments);
         var responsePriceEntity = routeService.countOptimalPathAndPrice("cov", "r");
-        var expected = new ResponsePriceEntity(5, BigDecimal.valueOf(17.0), Currency.GBP);
+        var expected = new Price(5, BigDecimal.valueOf(17.0), Currency.GBP);
         assertEquals(expected, responsePriceEntity);
     }
 

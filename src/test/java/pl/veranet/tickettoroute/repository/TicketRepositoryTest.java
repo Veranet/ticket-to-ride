@@ -19,7 +19,7 @@ class TicketRepositoryTest {
     private TicketRepository ticketRepository;
 
     @Test
-    void shouldSaveTicket() {
+    void shouldSaveTicketWhenHappyPath() {
         var ticket = new Ticket(null, 2, "A", "B", BigDecimal.valueOf(25),
                 Instant.parse("2024-11-30T18:35:24.00Z"), Instant.parse("2024-11-30T18:35:24.00Z"));
         ticketRepository.save(ticket);

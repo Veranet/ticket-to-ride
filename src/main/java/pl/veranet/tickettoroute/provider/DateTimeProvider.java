@@ -6,7 +6,7 @@ import java.time.Instant;
 
 @Component
 public class DateTimeProvider {
-    public Instant now() {
+    public Instant provideDateTime() {
         return Instant.now();
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.veranet.tickettoroute.dto.ResponseTicketEntity;
+import pl.veranet.tickettoroute.dto.Decision;
 import pl.veranet.tickettoroute.dto.TicketCreateDto;
 import pl.veranet.tickettoroute.entity.Ticket;
 import pl.veranet.tickettoroute.service.TicketService;
@@ -31,7 +31,7 @@ public class TicketController {
      * @return a ResponseTicketEntity containing the details of the created ticket or an error message
      */
     @PostMapping("/ticket")
-    public ResponseTicketEntity buyTicket(@Valid @RequestBody TicketCreateDto ticketCreateDto) {
+    public Decision buyTicket(@Valid @RequestBody TicketCreateDto ticketCreateDto) {
         var ticket = conversionService.convert(ticketCreateDto, Ticket.class);
         return ticketService.createTicket(ticket);
     }

@@ -1,7 +1,7 @@
 package pl.veranet.tickettoroute.service;
 
 import org.springframework.stereotype.Service;
-import pl.veranet.tickettoroute.dto.ResponseTicketEntity;
+import pl.veranet.tickettoroute.dto.Decision;
 import pl.veranet.tickettoroute.enams.Currency;
 import pl.veranet.tickettoroute.entity.Ticket;
 import pl.veranet.tickettoroute.provider.DateTimeProvider;
@@ -23,16 +23,16 @@ public class TicketService {
         this.dateTimeProvider = dateTimeProvider;
     }
 
-    public ResponseTicketEntity createTicket(Ticket ticket) { // todo : check data for valid in DTO or here
+    public Decision createTicket(Ticket ticket) {
         double balance = accountService.getBalance(ticket.getTravellerId());
         double price = ticket.getPrice().doubleValue();
 
         if (balance < price) {
             var lackOf = String.valueOf(price - balance);
-            return new ResponseTicketEntity("lackOf", Currency.GBP, null, lackOf);
+            return new Decision("lackOf", Currency.GBP, null, lackOf);
         }
 
-        var createDate = dateTimeProvider.now();
+        var createDate = dateTimeProvider.provideDateTime();
         var expiredDate = createDate.plus(2, ChronoUnit.DAYS);
         var ticketForSave =
                 new Ticket(null, ticket.getTravellerId(), ticket.getFromTown(), ticket.getToTown(), ticket.getPrice(),
@@ -40,6 +40,6 @@ public class TicketService {
         ticketRepository.save(ticketForSave);
         accountService.updateBalance(ticket.getTravellerId(), ticket.getPrice().negate());
         var success = String.valueOf(balance - price);
-        return new ResponseTicketEntity("success", Currency.GBP, success, null);
+        return new Decision("success", Currency.GBP, success, null);
     }
 }

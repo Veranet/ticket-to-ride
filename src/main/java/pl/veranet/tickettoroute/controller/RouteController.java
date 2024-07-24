@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.veranet.tickettoroute.dto.ResponsePriceEntity;
+import pl.veranet.tickettoroute.dto.Price;
 import pl.veranet.tickettoroute.service.RouteService;
 
 @RestController
@@ -26,8 +26,8 @@ public class RouteController {
      * @return a ResponsePriceEntity containing the price and other details of the optimal route
      */
     @GetMapping
-    public ResponsePriceEntity calculateThePriceOfAMostOptimalTravel(@RequestParam("fromTown") String fromTown,
-                                                                     @RequestParam("toTown") String toTown) {
+    public Price calculateThePriceOfAMostOptimalTravel(@RequestParam("fromTown") String fromTown,
+                                                       @RequestParam("toTown") String toTown) {
         return routeService.countOptimalPathAndPrice(fromTown, toTown);
     }
 }

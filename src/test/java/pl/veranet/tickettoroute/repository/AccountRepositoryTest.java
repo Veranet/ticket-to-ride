@@ -31,7 +31,7 @@ class AccountRepositoryTest {
     }
 
     @Test
-    void shouldSaveAccount() {
+    void shouldSaveAccountWhenHappyPath() {
         var accountForSave = new Account(null, 1, BigDecimal.valueOf(25));
         repository.save(accountForSave);
 

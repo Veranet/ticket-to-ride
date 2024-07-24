@@ -5,7 +5,7 @@ import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.WeightedMultigraph;
 import org.springframework.stereotype.Service;
-import pl.veranet.tickettoroute.dto.ResponsePriceEntity;
+import pl.veranet.tickettoroute.dto.Price;
 import pl.veranet.tickettoroute.enams.Currency;
 import pl.veranet.tickettoroute.entity.Route;
 import pl.veranet.tickettoroute.repository.RouteRepository;
@@ -33,14 +33,14 @@ public class RouteService {
         this.threeSegmentsPrice = threeSegmentsPrice;
     }
 
-    public ResponsePriceEntity countOptimalPathAndPrice(String from, String to) {
+    public Price countOptimalPathAndPrice(String from, String to) {
         var allRoutes = getAllRoutes(from, to);
         Graph<String, DefaultWeightedEdge> graphRoutes = getRouteGraph(allRoutes);
         DijkstraShortestPath<String, DefaultWeightedEdge> dijkstraShortestPath =
                 new DijkstraShortestPath<>(graphRoutes);
         int numberOfSegments = Double.valueOf(Math.ceil(dijkstraShortestPath.getPath(from, to).getWeight())).intValue();
         double optimalPrice = calculatePrice(numberOfSegments);
-        return new ResponsePriceEntity(numberOfSegments, BigDecimal.valueOf(optimalPrice), Currency.GBP);
+        return new Price(numberOfSegments, BigDecimal.valueOf(optimalPrice), Currency.GBP);
     }
 
     private List<Route> getAllRoutes(String from, String to) {
@@ -64,7 +64,7 @@ public class RouteService {
             multiGraph.addVertex(route.getFromTown());
             multiGraph.addVertex(route.getToTown());
             DefaultWeightedEdge edge = multiGraph.addEdge(route.getFromTown(), route.getToTown());
-            multiGraph.setEdgeWeight(edge, route.getSegments());
+            multiGraph.setEdgeWeight(edge, route.getSegmentsAmount());
         }
         return multiGraph;
     }
