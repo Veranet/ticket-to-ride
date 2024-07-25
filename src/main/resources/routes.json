@@ -1,0 +1,34 @@
+[
+  {
+    "fromTown":"BIRGMINGHAM",
+    "toTown":"COVENTRY",
+    "segmentsAmount":1},
+  {
+    "fromTown":"BIRGMINGHAM",
+    "toTown":"BRISTOL",
+    "segmentsAmount":3},
+  {
+    "fromTown":"BIRGMINGHAM",
+    "toTown":"SWINDON",
+    "segmentsAmount":4},
+  {
+    "fromTown":"COVENTRY",
+    "toTown":"NORTHHAMPTON",
+    "segmentsAmount":2},
+  {
+    "fromTown":"NORTHHAMPTON",
+    "toTown":"LONDON",
+    "segmentsAmount":2},
+  {
+    "fromTown":"BRISTOL",
+    "toTown":"SWINDON",
+    "segmentsAmount":2},
+  {
+    "fromTown":"SWINDON",
+    "toTown":"READING",
+    "segmentsAmount":4},
+  {
+    "fromTown":"READING",
+    "toTown":"LONDON",
+    "segmentsAmount":1}
+]
