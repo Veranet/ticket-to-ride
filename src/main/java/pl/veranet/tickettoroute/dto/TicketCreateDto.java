@@ -1,8 +1,7 @@
 package pl.veranet.tickettoroute.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -13,7 +12,7 @@ public class TicketCreateDto {
     @NotBlank(message = "To Town must not be null or empty.")
     private String toTown;
     private int travellerId;
-    @PositiveOrZero(message = "Price must not be negative or zero.")
+    @Positive(message = "Price must not be negative or zero.")
     private BigDecimal price;
 
     public TicketCreateDto() {
@@ -26,19 +25,19 @@ public class TicketCreateDto {
         this.price = price;
     }
 
-    public @NotNull String getFromTown() {
+    public String getFromTown() {
         return fromTown;
     }
 
-    public void setFromTown(@NotNull String fromTown) {
+    public void setFromTown(String fromTown) {
         this.fromTown = fromTown;
     }
 
-    public @NotNull String getToTown() {
+    public String getToTown() {
         return toTown;
     }
 
-    public void setToTown(@NotNull String toTown) {
+    public void setToTown(String toTown) {
         this.toTown = toTown;
     }
 
@@ -50,11 +49,11 @@ public class TicketCreateDto {
         this.travellerId = travellerId;
     }
 
-    public @PositiveOrZero BigDecimal getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(@PositiveOrZero BigDecimal price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

@@ -1,6 +1,9 @@
 package pl.veranet.tickettoroute.controller;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,92 +58,47 @@ class TicketControllerTest {
     }
 
     @WithUserDetails("user")
-    @Test
-    void shouldReturnBadRequestWhenFromIsNull() throws Exception {
+    @ParameterizedTest
+    @CsvSource(textBlock = """
+           # fromTown           toTown
+               null,           null
+               "A",            null
+               null,           "B"
+               "",             "B"
+               "   ",          "B"
+               "A",            ""
+               "A",            "   "
+               "",             ""
+               "   ",          "  "
+           """, nullValues = "null")
+    void shouldReturnBadRequestWhenInvalidParameters(String fromTown, String toTown) throws Exception {
+        String requestBody = String.format("""
+                {
+                    "fromTown": %s,
+                    "toTown": %s,
+                    "travellerId": 1,
+                    "price": 7
+                }""", fromTown, toTown);
         mvc.perform(post("/ticket-to-ride/ticket")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "fromTown": null,
-                                    "toTown": "B",
-                                    "travellerId": 1,
-                                    "price": 7
-                                }"""))
+                        .content(requestBody))
                 .andExpect(status().isBadRequest());
     }
 
     @WithUserDetails("user")
-    @Test
-    void shouldReturnBadRequestWhenFromIsEmpty() throws Exception {
+    @ParameterizedTest
+    @ValueSource(doubles = {-7, 0})
+    void shouldReturnBadRequestWhenPriceIsNegativeOrZero(double invalidPrice) throws Exception {
+        String requestBody = String.format("""
+                {
+                    "fromTown": "A",
+                    "toTown": "B",
+                    "travellerId": 1,
+                    "price": %s
+                }""", invalidPrice);
         mvc.perform(post("/ticket-to-ride/ticket")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "fromTown": "",
-                                    "toTown": "B",
-                                    "travellerId": 1,
-                                    "price": 7
-                                }"""))
-                .andExpect(status().isBadRequest());
-    }
-
-    @WithUserDetails("user")
-    @Test
-    void shouldReturnBadRequestWhenToIsEmpty() throws Exception {
-        mvc.perform(post("/ticket-to-ride/ticket")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "fromTown": "A",
-                                    "toTown": "",
-                                    "travellerId": 1,
-                                    "price": 7
-                                }"""))
-                .andExpect(status().isBadRequest());
-    }
-
-    @WithUserDetails("user")
-    @Test
-    void shouldReturnBadRequestWhenToIsNull() throws Exception {
-        mvc.perform(post("/ticket-to-ride/ticket")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "fromTown": "A",
-                                    "toTown": null,
-                                    "travellerId": 1,
-                                    "price": 7
-                                }"""))
-                .andExpect(status().isBadRequest());
-    }
-
-    @WithUserDetails("user")
-    @Test
-    void shouldReturnBadRequestWhenPriceIsNegative() throws Exception {
-        mvc.perform(post("/ticket-to-ride/ticket")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "fromTown": "A",
-                                    "toTown": null,
-                                    "travellerId": 1,
-                                    "price": -7
-                                }"""))
-                .andExpect(status().isBadRequest());
-    }
-
-    @WithUserDetails("user")
-    @Test
-    void shouldReturnBadRequestWhenPrice0() throws Exception {
-        mvc.perform(post("/ticket-to-ride/ticket")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "fromTown": "A",
-                                    "toTown": null,
-                                    "travellerId": 1,
-                                    "price": 0
-                                }"""))
+                        .content(requestBody))
                 .andExpect(status().isBadRequest());
     }
 

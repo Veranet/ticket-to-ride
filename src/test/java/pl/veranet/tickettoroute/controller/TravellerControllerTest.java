@@ -1,6 +1,8 @@
 package pl.veranet.tickettoroute.controller;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,51 +31,41 @@ class TravellerControllerTest {
     @Test
     void shouldReturnSuccessfullyAndCreateTraveller() throws Exception {
         mvc.perform(post("/ticket-to-ride/traveller")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""
-                        {
-                            "name":"Cara",
-                            "email":"sara@dot.com"
-                        }"""))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                    "name":"Cara",
+                                    "email":"sara@dot.com"
+                                }"""))
                 .andExpect(status().isOk());
     }
 
     @WithUserDetails("user")
-    @Test
-    void shouldReturnBadRequestWhenNameIsNull() throws Exception {
+    @ParameterizedTest
+    @CsvSource(textBlock = """
+            # name              email
+                null,         null
+                null,         "sara@dot.com"
+                "Sara",       null
+                "",           "sara@dot.com"
+                "  ",         "sara@dot.com"
+                "Sara",       ""
+                "Sara",       " "
+                "Sara",       "s#lmtrjpkg"
+            """, nullValues = "null")
+    void shouldReturnBadRequestWhenNInvalidParameters(String name, String email) throws Exception {
+        String requestBody = String.format(
+                """
+                        {
+                        "name":%s,
+                        "email":%s,
+                        }
+                """,
+                name, email
+        );
         mvc.perform(post("/ticket-to-ride/traveller")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                        {
-                            "name":null,
-                            "email":"sara@dot.com"
-                        }"""))
-                .andExpect(status().isBadRequest());
-    }
-
-    @WithUserDetails("user")
-    @Test
-    void shouldReturnBadRequestWhenNameIsEmpty() throws Exception {
-        mvc.perform(post("/ticket-to-ride/traveller")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                        {
-                            "name":"",
-                            "email":"sara@dot.com"
-                        }"""))
-                .andExpect(status().isBadRequest());
-    }
-
-    @WithUserDetails("user")
-    @Test
-    void shouldReturnBadRequestWhenEmailIsNotValid() throws Exception {
-        mvc.perform(post("/ticket-to-ride/traveller")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                        {
-                            "name":"Sara",
-                            "email":"sara.com"
-                        }"""))
+                        .content(requestBody))
                 .andExpect(status().isBadRequest());
     }
 
@@ -83,10 +75,10 @@ class TravellerControllerTest {
         mvc.perform(post("/ticket-to-ride/traveller")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                        {
-                            "name":"Sara",
-                            "email":"sara.com"
-                        }"""))
+                                {
+                                    "name":"Sara",
+                                    "email":"sara.com"
+                                }"""))
                 .andExpect(status().isUnauthorized());
     }
 
