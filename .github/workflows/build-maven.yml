@@ -1,0 +1,18 @@
+name: Build with Maven
+on: [push, workflow_dispatch]
+
+jobs:
+  build_with_maven:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repo
+        uses: actions/checkout@v4.1.5
+      - name: Setup Java
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: 21
+          distribution: 'temurin'
+      - name: Run DataBase
+        run: docker compose up --detach
+      - name: Build project with Maven
+        run: mvn clean package

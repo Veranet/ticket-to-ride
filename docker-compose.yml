@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16.3
+    environment:
+      POSTGRES_DB: my_ticket_route_db
+      POSTGRES_USER: usertr
+      POSTGRES_PASSWORD: passwordtr
+    ports:
+      - "5432:5432"
