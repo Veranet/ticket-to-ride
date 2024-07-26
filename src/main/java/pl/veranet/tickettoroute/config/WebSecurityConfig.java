@@ -15,9 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class WebSecurityConfig {
-
     @Bean
-   public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails admin = User.withUsername("admin")
                 .password(passwordEncoder.encode("adminPass"))
                 .roles("ADMIN")

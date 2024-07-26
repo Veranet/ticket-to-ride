@@ -40,7 +40,7 @@ public class TravellerController {
      * @return a list of Traveller objects
      */
     @GetMapping("/admin")
-    public List<Traveller> getTravellers() { // todo: for ADMIN roll only!!!
+    public List<Traveller> getTravellers() {
         return travellerService.getAllTravellers();
     }
 }
